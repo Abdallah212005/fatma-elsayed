@@ -13,11 +13,6 @@ const MEDICAL_VIDEOS = [
     poster: '/videos/dental-reel.jpg',
   },
   {
-    title: 'Medical Campaign',
-    src: '/videos/medical-ad.mp4',
-    poster: '/videos/medical-ad.jpg',
-  },
-  {
     title: 'Clinic Review',
     src: '/videos/medical-video-06.mp4',
     poster: '/videos/medical-video-06.jpg',
