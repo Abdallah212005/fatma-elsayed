@@ -3,6 +3,7 @@ import { Camera, Globe, Instagram, Mail } from 'lucide-react';
 import { MinimalistHero } from '@/src/components/MinimalistHero';
 import { WorksWheel } from '@/src/components/WorksWheel';
 import { MedicalVideosSection } from '@/src/components/MedicalVideosSection';
+import { PhotographySection } from '@/src/components/PhotographySection';
 import { ApproachSection } from '@/src/components/ApproachSection';
 import { ArchiveIndex } from '@/src/components/ArchiveIndex';
 import { InquirySection } from '@/src/components/InquirySection';
@@ -39,6 +40,7 @@ export function App() {
         navLinks={[
           { label: 'Services', href: '#services' },
           { label: 'Catalog', href: '#catalog' },
+          { label: 'Photography', href: '#photography' },
           { label: 'Approach', href: '#approach' },
           { label: 'Archive', href: '#archive' },
         ]}
@@ -71,6 +73,8 @@ export function App() {
         <div id="catalog" className="border-t border-border">
           <MedicalVideosSection />
         </div>
+
+        <PhotographySection />
 
         <ApproachSection disciplines={STUDIO_DISCIPLINES} metrics={STUDIO_METRICS} />
 
