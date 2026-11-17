@@ -1,19 +1,34 @@
 import React, { useState } from 'react';
-import { Check, Instagram } from 'lucide-react';
-import { cn } from '@/src/lib/utils';
+import {
+  Archive,
+  Camera,
+  Check,
+  Compass,
+  DollarSign,
+  Image,
+  Instagram,
+  Lightbulb,
+  Mail,
+  MessageSquareText,
+  PenTool,
+  RotateCcw,
+  Send,
+  UserRound,
+  Video,
+} from 'lucide-react';
 
 const SCOPES = [
-  'Marketing Strategy',
-  'Creative Direction',
-  'Media Buying',
-  'Graphic Design',
-  'Video Editing',
+  { label: 'Marketing Strategy', icon: Lightbulb },
+  { label: 'Creative Direction', icon: PenTool },
+  { label: 'Media Buying', icon: DollarSign },
+  { label: 'Graphic Design', icon: Image },
+  { label: 'Video Editing', icon: Video },
 ] as const;
 
 export const InquirySection: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [scope, setScope] = useState<string>(SCOPES[0]);
+  const [scope, setScope] = useState<string>(SCOPES[0].label);
   const [brief, setBrief] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -35,7 +50,7 @@ export const InquirySection: React.FC = () => {
   const handleReset = () => {
     setName('');
     setEmail('');
-    setScope(SCOPES[0]);
+    setScope(SCOPES[0].label);
     setBrief('');
     setError(null);
     setSubmitted(false);
@@ -44,172 +59,182 @@ export const InquirySection: React.FC = () => {
   return (
     <footer
       id="contact"
+      aria-label="Contact"
       className="border-t border-border bg-surface/60 pt-20 pb-12"
     >
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-10 md:px-12">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-          {/* Studio Contact Info */}
-          <div className="lg:col-span-5">
-            <p className="text-xs font-medium tracking-wide text-foreground/60">Get in touch</p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-foreground text-balance sm:text-4xl">
-              Let's bring your next idea to life.
-            </h2>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-foreground/75">
-              For marketing strategy, creative direction, media buying, graphic design, or video
-              editing, share your goals in the form below.
-            </p>
-
-            <div className="mt-8 space-y-3 border-t border-border pt-6 text-sm text-foreground/80">
-              <div className="flex items-center gap-3">
-                <span className="font-medium">Fatma Elsayed</span>
+        <div className="mx-auto w-full max-w-3xl">
+          <div className="rounded-2xl border border-border bg-background p-6 sm:p-8">
+            {submitted ? (
+              <div className="flex items-center justify-between gap-4 py-6">
+                <Check className="h-8 w-8 text-[#F2B705]" aria-label="Inquiry received" />
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  aria-label="Send another inquiry"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-surface"
+                >
+                  <RotateCcw className="h-4 w-4" aria-hidden="true" />
+                </button>
               </div>
-              <span className="block text-foreground/60">Marketing &amp; Creative Services</span>
-            </div>
-          </div>
-
-          {/* Interactive Commission Brief Form */}
-          <div className="lg:col-span-7">
-            <div className="rounded-2xl border border-border bg-background p-6 sm:p-8">
-              {submitted ? (
-                <div className="flex flex-col items-start justify-between gap-4 py-6">
-                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#F2B705] text-[#0E0E10]">
-                    <Check className="h-5 w-5" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-2xl font-bold tracking-tight text-foreground">
-                      Inquiry received
-                    </h3>
-                    <p className="mt-2 max-w-md text-sm leading-relaxed text-foreground/75">
-                      Thank you, {name}. Your {scope.toLowerCase()} inquiry has been received.
-                      I'll be in touch soon.
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleReset}
-                    className="mt-2 rounded-full border border-border px-5 py-2.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface"
-                  >
-                    Send Another Note
-                  </button>
+            ) : (
+              <form
+                onSubmit={handleSubmit}
+                noValidate
+                aria-label="Project inquiry form"
+                className="space-y-5"
+              >
+                <div
+                  role="group"
+                  aria-label="Service"
+                  className="flex flex-wrap gap-3"
+                >
+                  {SCOPES.map(({ label, icon: Icon }) => {
+                    const active = scope === label;
+                    return (
+                      <button
+                        key={label}
+                        type="button"
+                        onClick={() => setScope(label)}
+                        aria-label={label}
+                        aria-pressed={active}
+                        className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
+                          active
+                            ? 'border-foreground bg-foreground'
+                            : 'border-border bg-background hover:bg-surface'
+                        }`}
+                      >
+                        <Icon
+                          className={`h-4 w-4 ${
+                            active ? 'text-background' : 'text-foreground/60'
+                          }`}
+                          aria-hidden="true"
+                        />
+                      </button>
+                    );
+                  })}
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} noValidate className="space-y-5">
-                  <div>
-                    <span className="block text-xs font-medium text-foreground/70">
-                      Service
-                    </span>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {SCOPES.map((item) => {
-                        const active = scope === item;
-                        return (
-                          <button
-                            key={item}
-                            type="button"
-                            onClick={() => setScope(item)}
-                            className={cn(
-                              'whitespace-nowrap shrink-0 rounded-full px-3.5 py-2 text-xs font-medium transition-colors',
-                              active
-                                ? 'bg-foreground text-background'
-                                : 'border border-border bg-background text-foreground/75 hover:bg-surface'
-                            )}
-                          >
-                            {item}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
 
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <div>
-                      <label htmlFor="inquiry-name" className="block text-xs font-medium text-foreground/70">
-                        Name
-                      </label>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="inquiry-name" className="sr-only">
+                      Name
+                    </label>
+                    <div className="relative">
+                      <UserRound
+                        className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-foreground/45"
+                        aria-hidden="true"
+                      />
                       <input
                         id="inquiry-name"
                         type="text"
                         value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Your name"
-                        className="mt-1.5 w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-foreground/40 focus:border-foreground focus:outline-none"
+                        onChange={(event) => setName(event.target.value)}
+                        autoComplete="name"
+                        aria-label="Name"
+                        className="w-full rounded-lg border border-border bg-background py-2.5 pr-3.5 pl-10 text-sm text-foreground focus:border-foreground focus:outline-none"
                       />
                     </div>
-                    <div>
-                      <label htmlFor="inquiry-email" className="block text-xs font-medium text-foreground/70">
-                        Email
-                      </label>
+                  </div>
+                  <div>
+                    <label htmlFor="inquiry-email" className="sr-only">
+                      Email
+                    </label>
+                    <div className="relative">
+                      <Mail
+                        className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-foreground/45"
+                        aria-hidden="true"
+                      />
                       <input
                         id="inquiry-email"
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="name@example.com"
-                        className="mt-1.5 w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-foreground/40 focus:border-foreground focus:outline-none"
+                        onChange={(event) => setEmail(event.target.value)}
+                        autoComplete="email"
+                        aria-label="Email"
+                        className="w-full rounded-lg border border-border bg-background py-2.5 pr-3.5 pl-10 text-sm text-foreground focus:border-foreground focus:outline-none"
                       />
                     </div>
                   </div>
+                </div>
 
-                  <div>
-                    <label htmlFor="inquiry-brief" className="block text-xs font-medium text-foreground/70">
-                      Project Brief &amp; Timeline
-                    </label>
+                <div>
+                  <label htmlFor="inquiry-brief" className="sr-only">
+                    Project brief and timeline
+                  </label>
+                  <div className="relative">
+                    <MessageSquareText
+                      className="absolute top-3.5 left-3.5 h-4 w-4 text-foreground/45"
+                      aria-hidden="true"
+                    />
                     <textarea
                       id="inquiry-brief"
                       rows={3}
                       value={brief}
-                      onChange={(e) => setBrief(e.target.value)}
-                      placeholder="Location, deliverables, and target production window..."
-                      className="mt-1.5 w-full resize-none rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-foreground/40 focus:border-foreground focus:outline-none"
+                      onChange={(event) => setBrief(event.target.value)}
+                      aria-label="Project brief and timeline"
+                      className="w-full resize-none rounded-lg border border-border bg-background py-2.5 pr-3.5 pl-10 text-sm text-foreground focus:border-foreground focus:outline-none"
                     />
                   </div>
+                </div>
 
-                  {error && (
-                    <p role="alert" className="text-xs font-medium text-[#B91C1C]">
-                      {error}
-                    </p>
-                  )}
+                {error && (
+                  <p
+                    role="alert"
+                    aria-label={error}
+                    className="text-sm font-medium text-[#B91C1C]"
+                  >
+                    <span aria-hidden="true">!</span>
+                  </p>
+                )}
 
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="text-xs text-foreground/55">
-                      Thanks for sharing your project
-                    </span>
-                    <button
-                      type="submit"
-                      className="rounded-full bg-[#F2B705] px-6 py-2.5 text-xs font-semibold text-[#0E0E10] transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      Submit Brief
-                    </button>
-                  </div>
-                </form>
-              )}
-            </div>
+                <div className="flex justify-end pt-1">
+                  <button
+                    type="submit"
+                    aria-label="Submit inquiry"
+                    className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#F2B705] text-[#0E0E10] transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    <Send className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
 
-        {/* Minimal Footer Bottom */}
-        <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-border pt-6 text-xs text-foreground/60 sm:flex-row sm:items-center">
-          <span>© 2026 Fatma Elsayed</span>
-          <div className="flex items-center gap-6">
-            <a href="#catalog" className="transition-colors hover:text-foreground">
-              Selected Works
+        <div className="mt-16 flex justify-center border-t border-border pt-6">
+          <nav aria-label="Footer navigation" className="flex items-center gap-6">
+            <a
+              href="#catalog"
+              aria-label="Selected works"
+              className="transition-colors hover:text-foreground"
+            >
+              <Camera className="h-4 w-4" aria-hidden="true" />
             </a>
-            <a href="#approach" className="transition-colors hover:text-foreground">
-              Approach
+            <a
+              href="#approach"
+              aria-label="Approach"
+              className="transition-colors hover:text-foreground"
+            >
+              <Compass className="h-4 w-4" aria-hidden="true" />
             </a>
-            <a href="#archive" className="transition-colors hover:text-foreground">
-              Archive
+            <a
+              href="#archive"
+              aria-label="Archive"
+              className="transition-colors hover:text-foreground"
+            >
+              <Archive className="h-4 w-4" aria-hidden="true" />
             </a>
             <a
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+              className="transition-colors hover:text-foreground"
             >
-              <Instagram className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>Instagram</span>
+              <Instagram className="h-4 w-4" aria-hidden="true" />
             </a>
-          </div>
+          </nav>
         </div>
       </div>
     </footer>

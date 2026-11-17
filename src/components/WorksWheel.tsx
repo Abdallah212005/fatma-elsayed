@@ -40,7 +40,6 @@ const INDEX = 0.04;
 const CULL = 1.6;
 
 const DRAG_UNITS = 420;
-const SETTLE = 140;
 const EASE = 0.12;
 
 const clamp = (v: number, lo: number, hi: number) =>
@@ -88,7 +87,6 @@ export function WorksWheel({
   const target = React.useRef(0);
   const idleDeg = React.useRef(0);
   const centeredRef = React.useRef(false);
-  const wheelGesture = React.useRef(false);
   const [active, setActive] = React.useState(0);
   const [mode, setMode] = React.useState<"ring" | "drum">("ring");
   const [stage, setStage] = React.useState<Stage>({ w: 0, h: 0 });
@@ -227,41 +225,7 @@ export function WorksWheel({
     [last],
   );
 
-  React.useEffect(() => {
-    const el = stageRef.current;
-    if (!el) return;
-    const onWheel = (event: WheelEvent) => {
-      if (!centeredRef.current) return;
-      const direction = Math.sign(event.deltaY);
-      const canAdvance =
-        (direction > 0 && target.current < last + 1) ||
-        (direction < 0 && target.current > 0);
-      if (!canAdvance) return;
-
-      event.preventDefault();
-      window.clearTimeout(settling.current);
-      if (!wheelGesture.current) {
-        wheelGesture.current = true;
-        to(Math.round(target.current) + direction);
-      }
-      settling.current = window.setTimeout(
-        () => {
-          wheelGesture.current = false;
-          to(Math.round(target.current));
-        },
-        SETTLE,
-      );
-    };
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => {
-      el.removeEventListener("wheel", onWheel);
-      window.clearTimeout(settling.current);
-      wheelGesture.current = false;
-    };
-  }, [to, last]);
-
   const drag = React.useRef<{ startY: number; lastY: number; moved: boolean } | null>(null);
-  const settling = React.useRef(0);
 
   return (
     <motion.section

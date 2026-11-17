@@ -1049,7 +1049,7 @@ canvas.gf-art[data-ready] { opacity: 1; filter: none; }
   width: 272px;
   height: 184px;
   max-width: none;
-  object-fit: cover;
+  object-fit: contain;
   transition: opacity .9s var(--gf-ease), filter .9s var(--gf-ease);
 }
 canvas.gf-sheet-art { opacity: 0; filter: blur(10px); }
